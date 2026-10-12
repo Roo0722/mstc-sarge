@@ -1,5 +1,5 @@
 // Turns a chat message into a form the rules can match, undoing the usual tricks.
-const LEET = { "0": "o", "1": "i", "3": "e", "4": "a", "5": "s", "7": "t", "@": "a", "$": "s", "!": "i", "|": "i", "+": "t" };
+export const LEET = { "0": "o", "1": "i", "3": "e", "4": "a", "5": "s", "7": "t", "@": "a", "$": "s", "!": "i", "|": "i", "+": "t" };
 
 export function stripAccents(s) {
   return s.normalize("NFKD").replace(/[̀-ͯ]/g, "");

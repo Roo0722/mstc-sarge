@@ -17,7 +17,7 @@ chat Worker. See **[DESIGN.md](DESIGN.md)** for the full plan, decisions and ope
   - per-user strikes that **fade over time**, then a short mute
 - `wordlists/`: English starter entries; Tagalog and Cebuano lists are empty for coaches to fill in
 - `test/`: automated tests (dummy words only)
-- `worker/`, `dev-panel/`: placeholders for the next stages
+- `worker/`: the `mstc-chat` Cloudflare Worker (sign-up, chat room, admin API); works locally, not deployed. `dev-panel/` is still a placeholder
 
 ## Try it
 

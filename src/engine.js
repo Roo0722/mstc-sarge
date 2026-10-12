@@ -91,5 +91,29 @@ export function createModerator({ blocked = new Map(), safe = new Set(), config 
     return { action, text: action === "censor" ? out : action === "allow" ? text : undefined, reasons, notify, mutedUntil: u.mutedUntil || undefined, strikeScore: strikeScore(u, now) };
   }
 
-  return { moderate, strikeScore: (id, now = Date.now()) => strikeScore(state(id), now), unmute: (id) => { state(id).mutedUntil = 0; } };
+  // Persistence hooks: the chat room keeps each member's state in storage between messages (the engine itself is
+  // rebuilt per message). Only plain, validated data goes in or out.
+  const num = (v) => (Number.isFinite(v) ? v : 0);
+  function exportUser(id) {
+    const u = state(id);
+    return { strikes: u.strikes, mutedUntil: u.mutedUntil, recent: u.recent };
+  }
+  function importUser(id, data) {
+    const d = data && typeof data === "object" ? data : {};
+    const list = (a) => (Array.isArray(a) ? a.slice(-50) : []);
+    users.set(id, {
+      strikes: list(d.strikes).map((s) => ({ t: num(s?.t), w: num(s?.w) })),
+      mutedUntil: num(d.mutedUntil),
+      recent: list(d.recent).map((r) => ({ t: num(r?.t), text: String(r?.text ?? "") })),
+    });
+  }
+
+  return {
+    moderate,
+    strikeScore: (id, now = Date.now()) => strikeScore(state(id), now),
+    mute: (id, ms, now = Date.now()) => { state(id).mutedUntil = now + ms; },
+    unmute: (id) => { state(id).mutedUntil = 0; },
+    exportUser,
+    importUser,
+  };
 }

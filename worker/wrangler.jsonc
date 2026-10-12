@@ -1,0 +1,24 @@
+{
+  "name": "mstc-chat",
+  "main": "src/index.js",
+  "compatibility_date": "2025-09-01",
+
+  // One Durable Object class, SQLite-backed (the only kind available on the free plan).
+  "durable_objects": { "bindings": [{ "name": "ROOM", "class_name": "ChatRoom" }] },
+  "migrations": [{ "tag": "v1", "new_sqlite_classes": ["ChatRoom"] }],
+
+  // After `wrangler d1 create mstc-chat-db`, paste the printed database_id here.
+  "d1_databases": [{ "binding": "DB", "database_name": "mstc-chat-db", "database_id": "REPLACE_WITH_DATABASE_ID" }],
+
+  // 19:00 UTC = 3:00 AM in Manila. Today: housekeeping. Later: the nightly digest for guided learning.
+  "triggers": { "crons": ["0 19 * * *"] },
+
+  "vars": {
+    "BOT_NAME": "Sarge",
+    "ENABLED_ROOMS": "general",   // "general" or "general,coaches" (coaches room is staff-only)
+    "RETENTION_HOURS": "48",
+    "REPORT_RETENTION_DAYS": "7"
+  }
+  // Secrets (never put these in this file): wrangler secret put SETUP_KEY
+  // Optional push hook: wrangler secret put PUSH_URL / PUSH_SECRET (see src/push.js)
+}

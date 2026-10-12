@@ -82,3 +82,28 @@ test("a disguised mild word that can't be censored cleanly is blocked, not let t
   assert.equal(r.action, "block");
   assert.equal(r.notify, "sender");
 });
+
+test("state survives export/import, so a rebuilt engine keeps strikes and mutes", () => {
+  const a = sarge();
+  say(a, "heckwad", 0);
+  say(a, "megabad", 0); // severe = 2 strikes -> total 3 -> muted
+  const saved = JSON.parse(JSON.stringify(a.exportUser("u1")));
+  const b = sarge();
+  b.importUser("u1", saved);
+  assert.equal(say(b, "hello", 2000).action, "muted");
+  assert.ok(b.strikeScore("u1", 2000) > 2);
+});
+
+test("importUser tolerates garbage", () => {
+  const m = sarge();
+  m.importUser("u1", { strikes: "x", mutedUntil: "y", recent: [null, 5] });
+  assert.equal(say(m, "hello there", 0).action, "allow");
+});
+
+test("staff mute and unmute", () => {
+  const m = sarge();
+  m.mute("u1", 60_000, 0);
+  assert.equal(say(m, "hi", 1000).action, "muted");
+  m.unmute("u1");
+  assert.equal(say(m, "hi again", 2000).action, "allow");
+});

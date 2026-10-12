@@ -1,0 +1,18 @@
+{
+  "name": "mstc-chat",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "MSTC members' chat Worker: sign-up by invite code, WebSocket room with Sarge moderation.",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "db:init:local": "wrangler d1 execute mstc-chat-db --local --file=schema.sql",
+    "db:init": "wrangler d1 execute mstc-chat-db --remote --file=schema.sql",
+    "seed": "node scripts/seed.js > seed.sql",
+    "smoke": "node scripts/smoke.mjs"
+  },
+  "devDependencies": {
+    "wrangler": "^4.149.0"
+  }
+}
