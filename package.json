@@ -1,0 +1,8 @@
+{
+  "name": "mstc-sarge",
+  "version": "0.1.0",
+  "description": "Rule-based chat moderator ('Sarge') for the MSTC community. No AI model, no cost.",
+  "type": "module",
+  "scripts": { "test": "node --test" },
+  "private": true
+}

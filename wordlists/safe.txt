@@ -1,0 +1,5 @@
+# Words that must never be flagged (one per line)
+class
+assess
+assist
+classic

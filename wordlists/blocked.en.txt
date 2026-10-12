@@ -1,0 +1,3 @@
+# English: starter entries only (mild). Add more with severity 2 or 3 as needed.
+damn,1
+crap,1
